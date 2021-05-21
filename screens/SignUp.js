@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import { Text, TextInput, ImageBackground, StyleSheet, View } from 'react-native'
+import { connect } from 'react-redux'
+import authActions from '../redux/actions/authActions'
 
-const SignUp = () => {
+const SignUp = (props) => {
+    console.log(props.resgistrarNuevoUsuario)
     const [nuevoUsuario, setNuevoUsuario] = useState({
         'firstName': '',
         'lastName': '',
@@ -103,4 +106,8 @@ const styles = StyleSheet.create({
     },
 })
 
-export default SignUp
+mapDispatchToProps = {
+        resgistrarNuevoUsuario: authActions.resgistrarNuevoUsuario
+}
+
+export default connect(null, mapDispatchToProps)(SignUp) 

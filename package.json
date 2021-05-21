@@ -11,6 +11,7 @@
     "@expo-google-fonts/julius-sans-one": "^0.1.0",
     "@expo-google-fonts/montserrat": "^0.1.0",
     "@expo-google-fonts/shadows-into-light-two": "^0.1.0",
+    "axios": "^0.21.1",
     "expo": "~41.0.1",
     "expo-app-loading": "^1.0.3",
     "expo-font": "~9.1.0",
