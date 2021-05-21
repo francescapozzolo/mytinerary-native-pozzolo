@@ -1,21 +1,43 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import {} from 'react-native'
+import Welcome from './screens/Welcome'
+import LogIn from './screens/LogIn'
+import SignUp from './screens/SignUp'
+import AppLoading from 'expo-app-loading';
+import { 
+  useFonts,
+  ShadowsIntoLightTwo_400Regular 
+} from '@expo-google-fonts/shadows-into-light-two'
+import{  Montserrat_200ExtraLight} from '@expo-google-fonts/montserrat'
+import { JuliusSansOne_400Regular } from '@expo-google-fonts/julius-sans-one'
+import {Provider} from 'react-redux'
+import { createStore } from 'redux'
+import mainReducer from './redux/reducers/mainReducer'
 
-export default function App() {
+const App = () => {
+
+  const store = createStore(mainReducer)
+
+  let [fontsLoaded] = useFonts({
+    ShadowsIntoLightTwo_400Regular,
+    Montserrat_200ExtraLight,
+    JuliusSansOne_400Regular
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <Provider store={store}>
+        <>
+            <SignUp />
+            {/* <LogIn /> */}
+            {/* <Welcome /> */}
+            {/* <Home /> */}
+        </>
+    </Provider>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App
