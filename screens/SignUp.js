@@ -4,13 +4,13 @@ import { connect } from 'react-redux'
 import authActions from '../redux/actions/authActions'
 
 const SignUp = (props) => {
-    console.log(props.resgistrarNuevoUsuario)
+
     const [nuevoUsuario, setNuevoUsuario] = useState({
         'firstName': '',
         'lastName': '',
         'email': '', 
         'password': '',
-        'image': '',
+        'userPic': '',
         'country': ''
     })
 
@@ -21,8 +21,19 @@ const SignUp = (props) => {
         })
     }
 
+
     const cargarNuevoUsuario = () => {
-        
+        if (Object.values(nuevoUsuario).some(value => value === "")) {
+            console.log('no puede estar vacio')
+            Alert.alert('no puede estar vacio')
+        } else{ 
+            props.registrarNuevoUsuario(nuevoUsuario)
+            if (response) {
+                response.details.map(error => setMistakes((prevState) => {
+                    return { ...prevState, [error.context.label]: error.message }
+                }))
+            }
+        }    
     }
 
     return (
@@ -59,11 +70,11 @@ const SignUp = (props) => {
                     style={styles.inputs}
                     placeholder= 'Please enter your photo'
                     placeholderTextColor= 'white'
-                    onChangeText= {(e)=> guardarDatosUsuario(e, 'image')}> 
+                    onChangeText= {(e)=> guardarDatosUsuario(e, 'userPic')}> 
                 </TextInput>
                 <TextInput 
                     style={styles.inputs}
-                    placeholder= 'Please enter your password'
+                    placeholder= 'Please enter your country'
                     placeholderTextColor= 'white'
                     onChangeText= {(e)=> guardarDatosUsuario(e, 'country')}> 
                 </TextInput>
@@ -106,8 +117,8 @@ const styles = StyleSheet.create({
     },
 })
 
-mapDispatchToProps = {
-        resgistrarNuevoUsuario: authActions.resgistrarNuevoUsuario
+const mapDispatchToProps = {
+    registrarNuevoUsuario: authActions.registrarNuevoUsuario
 }
 
 export default connect(null, mapDispatchToProps)(SignUp) 

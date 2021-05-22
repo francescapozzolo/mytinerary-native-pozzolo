@@ -7,6 +7,7 @@ const initialState = {
 const citiesReducer = (state = initialState , action) => {
     switch(action.type){
         case 'CARGAR_TODAS_CIUDADES':
+
             return {
                 ciudades: action.payload,
                 ciudadesBuscadas: action.payload
