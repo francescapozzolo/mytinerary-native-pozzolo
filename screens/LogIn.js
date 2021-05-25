@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text, TextInput, StyleSheet, ImageBackground, View } from 'react-native'
+import { Text, TextInput, StyleSheet, ImageBackground, View, Pressable } from 'react-native'
 import { connect } from 'react-redux'
 import authActions from '../redux/actions/authActions'
 
@@ -40,7 +40,11 @@ const LogIn = (props) => {
                 </TextInput>
                 <Text 
                         style={styles.tituloLogo}
-                        onPress={() => cargarUsuario()}>Log in</Text>
+                        onPress={() => cargarUsuario()}>Log in
+                </Text>
+                <Pressable onPress={() => props.navigation.navigate('signup')}> 
+                    <Text>New in Mytinerary? Sign Up</Text>
+                </Pressable>
             </View>
         </ImageBackground>
     )

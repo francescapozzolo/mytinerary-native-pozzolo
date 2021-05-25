@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View, StyleSheet, Image, ImageBackground } from 'react-native'
+import { Text, View, StyleSheet, Image, ImageBackground, Pressable } from 'react-native'
 
-const Welcome = () => {
+const Welcome = (props) => {
 
     return(
         <ImageBackground source={require('../assets/portada.jpg')} style={styles.contenedorPortada}>
             <View style={styles.callToAction}>
                 <Text style={styles.tituloPortada}>Welcome to</Text>
                 <Text style={styles.tituloLogo}> Mytinerary</Text>
+                <Pressable onPress={() => props.navigation.navigate('home')}>
+                    <Text>Lets start</Text>
+                </Pressable>
             </View>
         </ImageBackground>
     )

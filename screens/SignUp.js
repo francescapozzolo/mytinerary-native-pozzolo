@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
-import { Text, TextInput, ImageBackground, StyleSheet, View } from 'react-native'
+import { Text, TextInput, ImageBackground, StyleSheet, View, Pressable, Alert } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 import authActions from '../redux/actions/authActions'
+import { Ionicons } from '@expo/vector-icons'
+import { FontAwesome } from '@expo/vector-icons';
 
 const SignUp = (props) => {
 
@@ -24,8 +27,7 @@ const SignUp = (props) => {
 
     const cargarNuevoUsuario = () => {
         if (Object.values(nuevoUsuario).some(value => value === "")) {
-            console.log('no puede estar vacio')
-            Alert.alert('no puede estar vacio')
+            Alert.alert('Some fields are empty, please complete them to continue')
         } else{ 
             props.registrarNuevoUsuario(nuevoUsuario)
             if (response) {
@@ -38,7 +40,7 @@ const SignUp = (props) => {
 
     return (
         <ImageBackground source={require('../assets/fotoFormulario.jpg')} style={styles.contenedorRegistro}>
-            <View style={styles.formulario}>
+            <ScrollView style={styles.formulario}>
                 <Text style={styles.tituloLogo}>Mytinerary</Text>
                 <TextInput 
                     style={styles.inputs}
@@ -72,16 +74,15 @@ const SignUp = (props) => {
                     placeholderTextColor= 'white'
                     onChangeText= {(e)=> guardarDatosUsuario(e, 'userPic')}> 
                 </TextInput>
-                <TextInput 
-                    style={styles.inputs}
-                    placeholder= 'Please enter your country'
-                    placeholderTextColor= 'white'
-                    onChangeText= {(e)=> guardarDatosUsuario(e, 'country')}> 
-                </TextInput>
-                <Text 
-                    style={styles.tituloLogo}
-                    onPress={() => cargarNuevoUsuario()}>Sign up</Text>
-            </View>
+                <Pressable onPress={() => cargarNuevoUsuario()}>
+                    <Text 
+                        style={styles.tituloLogo}
+                        >Sign up<FontAwesome name="user-plus" size={24} color="white" /></Text>
+                </Pressable>
+                <Pressable onPress={() => props.navigation.navigate('login')}> 
+                    <Text>Already have an account? Log In</Text>
+                </Pressable>
+            </ScrollView>
         </ImageBackground>
     )
 }
@@ -94,25 +95,27 @@ const styles = StyleSheet.create({
     },
     formulario: {
         backgroundColor: 'rgba(191,147,147, 0.8)',
-        width: '80%', 
-        height: '70%', 
-        justifyContent: 'center',
-        alignItems: 'center',
+        width: '90%', 
+        height: '95%',
+        marginLeft: '5%',
+        marginTop: '2%', 
         borderRadius: 10,
     },
     tituloLogo:{
         fontFamily: 'ShadowsIntoLightTwo_400Regular',
         color: 'white',
-        fontSize: 30
+        fontSize: 30,
+        textAlign: 'center',
+        marginTop: '4%'
     },
     inputs: {
         fontFamily: 'Montserrat_200ExtraLight',
-        width: '85%',
+        width: '90%',
         borderColor: 'white',
         borderWidth: 1,
         padding: 5,
         borderRadius: 10,
-        margin: 10
+        margin: '5%'
 
     },
 })
