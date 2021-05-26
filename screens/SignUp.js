@@ -103,7 +103,7 @@ const SignUp = (props) => {
                         >Sign up<FontAwesome name="user-plus" size={24} color="white" /></Text>
                 </TouchableHighlight>
                 <Pressable onPress={() => props.navigation.navigate('login')}> 
-                    <Text>Already have an account? Log In</Text>
+                    <Text style={styles.redireccion}>Already have an account? Log In</Text>
                 </Pressable>
             </ScrollView>
         </ImageBackground>
@@ -139,8 +139,12 @@ const styles = StyleSheet.create({
         padding: 5,
         borderRadius: 10,
         margin: '5%'
-
     },
+    redireccion: {
+        color: 'white',
+        fontFamily: 'Montserrat_200ExtraLight',
+        textAlign: 'center'
+    }
 })
 
 const mapDispatchToProps = {

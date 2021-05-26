@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Text, TextInput, StyleSheet, ImageBackground, View, Pressable, TouchableHighlight, Alert } from 'react-native'
+import { Text, TextInput, StyleSheet, ImageBackground, View, Pressable, TouchableHighlight, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import authActions from '../redux/actions/authActions'
+import { Entypo } from '@expo/vector-icons';
 
 const LogIn = (props) => {
     const [usuario, setUsuario] = useState({
@@ -21,7 +22,7 @@ const LogIn = (props) => {
             Alert.alert('Some fields are empty, please complete them to continue')
         } else{
             const respuesta = await props.loguearUsuario(usuario)
-            if(respuesta){
+            if(respuesta.success){
                 Alert.alert(`Welcome to Mytinerary`)
                 props.navigation.navigate('home')
             }
@@ -30,7 +31,7 @@ const LogIn = (props) => {
 
     return (
         <ImageBackground source={require('../assets/fotoFormulario.jpg')} style={styles.contenedorRegistro}>
-            <View style={styles.formulario}>
+            <ScrollView style={styles.formulario}>
                 <Text style={styles.tituloLogo}>Mytinerary</Text>
                 <TextInput 
                     style={styles.inputs}
@@ -47,12 +48,12 @@ const LogIn = (props) => {
                     onChangeText= {(e)=> guardarDatosUsuario(e, 'password')}> 
                 </TextInput>
                 <TouchableHighlight onPress={() => cargarUsuario()}> 
-                    <Text style={styles.tituloLogo}> Log in</Text>
+                    <Text style={styles.tituloLogo}> Log in<Entypo name="login" size={30} color="white" /></Text>
                 </TouchableHighlight>
                 <Pressable onPress={() => props.navigation.navigate('signup')}> 
-                    <Text>New in Mytinerary? Sign Up</Text>
+                    <Text style={styles.redireccion}>New in Mytinerary? Sign Up</Text>
                 </Pressable>
-            </View>
+            </ScrollView>
         </ImageBackground>
     )
 }
@@ -65,27 +66,35 @@ const styles = StyleSheet.create({
     },
     formulario: {
         backgroundColor: 'rgba(191,147,147, 0.8)',
-        width: '80%', 
-        height: '70%', 
-        justifyContent: 'center',
-        alignItems: 'center',
+        width: '90%', 
+        height: '60%',
+        marginLeft: '5%',
+        marginTop: '10%', 
+        marginBottom: '5%',
         borderRadius: 10,
     },
     tituloLogo:{
         fontFamily: 'ShadowsIntoLightTwo_400Regular',
         color: 'white',
-        fontSize: 30
+        fontSize: 30,
+        textAlign: 'center',
+        marginTop: '2%',
     },
     inputs: {
         fontFamily: 'Montserrat_200ExtraLight',
-        width: '85%',
+        width: '90%',
         borderColor: 'white',
         borderWidth: 1,
         padding: 5,
         borderRadius: 10,
-        margin: 10
-
+        margin: '5%'
     },
+    redireccion: {
+        color: 'white',
+        fontFamily: 'Montserrat_200ExtraLight',
+        textAlign: 'center',
+        marginRight: '5%'
+    }
 })
 
 const mapDispatchToProps = {

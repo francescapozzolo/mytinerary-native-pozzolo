@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import itineraryActions from '../redux/actions/itinerariesActions';
 
 const Itinerario = (props) => {
+    console.log(props.itinerario)
 
     const [usersLiked, setUsersLiked] = useState(props.itinerario.usersliked)
     const [colorear, setColorear] =useState(false)
@@ -39,6 +40,7 @@ const Itinerario = (props) => {
             <ImageBackground source={{uri: `https://mytinerary-pozzolo.herokuapp.com/assets/${props.itinerario.photobanner}`}}style={styles.fotoItinerario}>
                 <View  style={styles.detallesItinerario}>
                     <Text style={[styles.textoItinerarios, styles.titItinerario]}>{props.itinerario.title}</Text>
+                    <Image source={{uri: `https://mytinerary-pozzolo.herokuapp.com/assets/${props.itinerario.authorPic}`}} style={styles.fotoUsuario}></Image>
                     <Text style={styles.textoItinerarios}>{props.itinerario.authorName}</Text>
                     <View style={styles.resumenItinerario}>
                         <Text>{props.itinerario.duration} <Foundation name="clock" size={15} color="black" /></Text>
@@ -47,7 +49,6 @@ const Itinerario = (props) => {
                             <FontAwesome5 name="heart" size={15} style={{color: `${colorear ? "red" : "black"}`}} />
                         </Text>
                     </View>
-                    <Text></Text>
                 </View>
                 
             </ImageBackground>
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
     },
     fotoItinerario: {
         width: '100%', 
-        height: 150
+        height: 200
     },
     detallesItinerario: {
         backgroundColor: 'rgba(255,255,255, 0.6)',
@@ -85,6 +86,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: '50%', 
         justifyContent: 'space-around'
+    },
+    fotoUsuario: {
+        width: 30,
+        height: 30,
+        borderRadius: 20,
+        alignSelf: 'center'
     }
 })
 
