@@ -6,7 +6,6 @@ import Itinerario from '../componentes/Itinerario'
 import itineraryActions from '../redux/actions/itinerariesActions'
 
 const City = (props) => {
-    console.log(props.itinerarios)
 
     const [ciudad, setCiudad] = useState([])
     const idCiudad = props.route.params
@@ -26,7 +25,7 @@ const City = (props) => {
             <ScrollView style={styles.contenedorItinerarios}>
                 {props.itinerarios.map(itinerario => {
                     return(
-                        <Itinerario key={itinerario._id} itinerario={itinerario}/>
+                        <Itinerario key={itinerario._id} itinerario={itinerario} navigation={props.navigation}/>
                     )
                 })}
             </ScrollView>
@@ -47,7 +46,7 @@ const styles = StyleSheet.create({
     },
     contenedorItinerarios: {
         width: '100%',
-        paddingTop: 20,
+        marginTop: 20,
     }
 })
 

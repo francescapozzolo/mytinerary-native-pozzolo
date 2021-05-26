@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
-import { Text, TextInput, ImageBackground, StyleSheet, View, Pressable, Alert } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Text, TextInput, ImageBackground, StyleSheet, View, Pressable, Alert, TouchableHighlight } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 import authActions from '../redux/actions/authActions'
 import { Ionicons } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons';
+import RNPickerSelect from 'react-native-picker-select';
 
 const SignUp = (props) => {
 
@@ -16,6 +17,18 @@ const SignUp = (props) => {
         'userPic': '',
         'country': ''
     })
+    const [paises, setPaises] = useState([])
+
+    const fetchearPaises = async () => {
+        const respuesta = await fetch ('https://restcountries.eu/rest/v2/all');
+        const responseCountries = await respuesta.json();
+        setPaises(responseCountries)
+    }
+
+    useEffect(() => {
+        fetchearPaises()
+    }, [])
+
 
     const guardarDatosUsuario = (e, campo) => {
         setNuevoUsuario({
@@ -24,19 +37,17 @@ const SignUp = (props) => {
         })
     }
 
-
-    const cargarNuevoUsuario = () => {
+    const cargarNuevoUsuario = async () => {
         if (Object.values(nuevoUsuario).some(value => value === "")) {
             Alert.alert('Some fields are empty, please complete them to continue')
-        } else{ 
-            props.registrarNuevoUsuario(nuevoUsuario)
-            if (response) {
-                response.details.map(error => setMistakes((prevState) => {
-                    return { ...prevState, [error.context.label]: error.message }
-                }))
+        } else{
+            const respuesta = await props.registrarNuevoUsuario(nuevoUsuario)
+            if(respuesta.success){
+                Alert.alert(`Welcome to Mytinerary`)
+                props.navigation.navigate('home')
             }
-        }    
-    }
+        }
+    }    
 
     return (
         <ImageBackground source={require('../assets/fotoFormulario.jpg')} style={styles.contenedorRegistro}>
@@ -74,11 +85,23 @@ const SignUp = (props) => {
                     placeholderTextColor= 'white'
                     onChangeText= {(e)=> guardarDatosUsuario(e, 'userPic')}> 
                 </TextInput>
-                <Pressable onPress={() => cargarNuevoUsuario()}>
+                <RNPickerSelect
+                    onValueChange={(value) =>  guardarDatosUsuario(value, 'country')}
+                    useNativeAndroidPickerStyle={false}
+                    placeholder={{ label: "Select your country", value: null }}
+                    items={
+                        paises.map(pais => {
+                            return(
+                                {label: pais.name, value: pais.name}
+                            )
+                        })
+                    }
+                />
+                <TouchableHighlight onPress={() => cargarNuevoUsuario()}>
                     <Text 
                         style={styles.tituloLogo}
                         >Sign up<FontAwesome name="user-plus" size={24} color="white" /></Text>
-                </Pressable>
+                </TouchableHighlight>
                 <Pressable onPress={() => props.navigation.navigate('login')}> 
                     <Text>Already have an account? Log In</Text>
                 </Pressable>

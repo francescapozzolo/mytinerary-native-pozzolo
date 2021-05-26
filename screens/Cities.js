@@ -28,9 +28,8 @@ const Cities = (props) => {
             <ScrollView style={styles.contenedorFotosCiudades}>
                 {Loading 
                     ? <Text style={styles.texto}>Loading</Text>
-                    : props.todasCiudades.length === 0
-                        ? <ImageBackground style={styles.sinCoincidencias} source={{uri: "https://mytinerary-pozzolo.herokuapp.com/assets/mapa.jpg"}}><Text style={styles.textoSinCoincidencias}>Oops! We don't have any city that matches your search! Try another one!</Text></ImageBackground>
-                        : props.todasCiudades.map(ciudad => {
+                    : (props.todasCiudades.length > 0 )   
+                        ? props.todasCiudades.map(ciudad => {
                             return(
                                 <>
                                     <TouchableHighlight onPress={() => props.navigation.navigate('city', ciudad._id)}>
@@ -41,7 +40,9 @@ const Cities = (props) => {
                                     </TouchableHighlight>
                                 </>
                             )
-                         })}
+                         })
+                         : <ImageBackground style={styles.sinCoincidencias} source={{uri: "https://mytinerary-pozzolo.herokuapp.com/assets/mapa.jpg"}}><Text style={styles.textoSinCoincidencias}>Oops! We don't have any city that matches your search! Try another one!</Text></ImageBackground>
+                         }
             </ScrollView>
         </View>
         

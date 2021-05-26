@@ -10,7 +10,7 @@ import {
   useFonts,
   ShadowsIntoLightTwo_400Regular 
 } from '@expo-google-fonts/shadows-into-light-two'
-import{  Montserrat_200ExtraLight} from '@expo-google-fonts/montserrat'
+import{  Montserrat_200ExtraLight, Montserrat_600SemiBold} from '@expo-google-fonts/montserrat'
 import { JuliusSansOne_400Regular } from '@expo-google-fonts/julius-sans-one'
 import {Provider} from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
@@ -29,7 +29,8 @@ const App = () => {
   let [fontsLoaded] = useFonts({
     ShadowsIntoLightTwo_400Regular,
     Montserrat_200ExtraLight,
-    JuliusSansOne_400Regular
+    JuliusSansOne_400Regular,
+    Montserrat_600SemiBold
   });
 
   if (!fontsLoaded) {

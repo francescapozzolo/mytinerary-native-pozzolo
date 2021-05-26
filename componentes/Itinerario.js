@@ -1,14 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, View, StyleSheet, Text, TextInput, ImageBackground, TouchableHighlight, Alert } from 'react-native'
 import { Foundation } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { connect } from 'react-redux';
+import itineraryActions from '../redux/actions/itinerariesActions';
 
 const Itinerario = (props) => {
-    const [visible, setVisible] = useState(false)
-    const [actividades, setActividades] = useState(null)
+
     const [usersLiked, setUsersLiked] = useState(props.itinerario.usersliked)
     const [colorear, setColorear] =useState(false)
     const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        if(props.usuarioLogueado){
+            if(usersLiked.includes(props.usuarioLogueado.email)){
+                setColorear(true)
+            } 
+        } else {
+            setColorear(false)
+        }
+    }, [])
 
     const likear = async () => {
         if(!props.usuarioLogueado){
@@ -24,22 +35,23 @@ const Itinerario = (props) => {
     }
 
     return (
-        <View style={styles.itinerarioBanner}>
+        <TouchableHighlight style={styles.itinerarioBanner} onPress={() => props.navigation.navigate('activities', props.itinerario._id, {comentarios: props.itinerario.comments})}>
             <ImageBackground source={{uri: `https://mytinerary-pozzolo.herokuapp.com/assets/${props.itinerario.photobanner}`}}style={styles.fotoItinerario}>
                 <View  style={styles.detallesItinerario}>
                     <Text style={[styles.textoItinerarios, styles.titItinerario]}>{props.itinerario.title}</Text>
                     <Text style={styles.textoItinerarios}>{props.itinerario.authorName}</Text>
                     <View style={styles.resumenItinerario}>
                         <Text>{props.itinerario.duration} <Foundation name="clock" size={15} color="black" /></Text>
-                        <Text>Price: {Array(props.itinerario.price).fill(<Foundation name="dollar" size={15} color="black" />)}</Text>
-                        <TouchableHighlight onPress={loading && likear}>
-                            <FontAwesome5 name="heart" size={15} style={{color: `${colorear ? "red" : ""}`}} />
-                        </TouchableHighlight>
+                        <Text style={{fontFamily: 'Montserrat_200ExtraLight'}}>Price: {Array(props.itinerario.price).fill(<Foundation name="dollar" size={15} color="black" />)}</Text>
+                        <Text onPress={loading ? likear : null}>
+                            <FontAwesome5 name="heart" size={15} style={{color: `${colorear ? "red" : "black"}`}} />
+                        </Text>
                     </View>
+                    <Text></Text>
                 </View>
                 
             </ImageBackground>
-        </View>
+        </TouchableHighlight>
     )
 }
 
@@ -55,16 +67,17 @@ const styles = StyleSheet.create({
         height: 150
     },
     detallesItinerario: {
-        backgroundColor: 'rgba(255,255,255, 0.4)',
+        backgroundColor: 'rgba(255,255,255, 0.6)',
         height: '100%'  
     },
     titItinerario:{
-        // fontFamily: 'JuliusSansOne_400Regular'
+        fontFamily: 'JuliusSansOne_400Regular',
+        fontSize: 25
     },
     textoItinerarios: {
         color: 'black',
         textAlign: 'center',
-        // fontFamily: 'Montserrat_200ExtraLight',
+        fontFamily: 'Montserrat_200ExtraLight',
         paddingTop: '5%'
     },
     resumenItinerario: {
@@ -75,4 +88,15 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Itinerario
+const mapStateToProps = state => {
+    return {
+        usuarioLogueado: state.authReducer.usuarioLogueado
+    }
+}
+
+const mapDispatchToProps = {
+    cargarItinerarios: itineraryActions.cargarItinerarios,
+    likearItinerario: itineraryActions.likearItinerario
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Itinerario)

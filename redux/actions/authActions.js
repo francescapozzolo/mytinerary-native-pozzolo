@@ -1,4 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
+import { Alert } from 'react-native'
 
 const authActions = {
     registrarNuevoUsuario: (nuevoUsuario) => {
@@ -23,10 +25,11 @@ const authActions = {
         return async (dispatch, getState) => {
             try{
                 const respuesta = await axios.post('https://mytinerary-pozzolo.herokuapp.com/api/users/login', usuario)
-                console.log(respuesta)
                 if(!respuesta.data.success){
-                    console.log("Incorrect username or password")
+                    Alert.alert("Incorrect username or password")
                 } else {
+                    await AsyncStorage.setItem("usuarioLogueado", JSON.stringify(respuesta.data.respuesta.token))
+                    await AsyncStorage.setItem("token", JSON.stringify({firstName: respuesta.data.respuesta.firstName, userPic: respuesta.data.respuesta.userPic, email: respuesta.data.respuesta.email}))
                     dispatch({
                         type: "USER_SIGNUP",
                         payload: respuesta.data.success ? respuesta.data.respuesta : null,    
@@ -47,24 +50,24 @@ const authActions = {
         }
     },
 
-    // loginForzado: (usuarioLocalStorage) => {
-    //     return async (dispatch, getState) => {
-    //         try{
-    //             await axios.get('https://mytinerary-pozzolo.herokuapp.com/api/users/loginforzado', {
-    //                 headers: {
-    //                     'Authorization': 'Bearer ' + usuarioLocalStorage.token
-    //                 }
-    //             })
-    //             dispatch({
-    //                 type: "USER_SIGNUP",
-    //                 payload: usuarioLocalStorage,
-    //             })
-    //         }
-    //         catch(error){
-    //             console.log(error)
-    //         }
-    //     }
-    // }
+    loginForzado: (usuarioLocalStorage) => {
+        return async (dispatch, getState) => {
+            try{
+                await axios.get('https://mytinerary-pozzolo.herokuapp.com/api/users/loginforzado', {
+                    headers: {
+                        'Authorization': 'Bearer ' + usuarioLocalStorage.token
+                    }
+                })
+                dispatch({
+                    type: "USER_SIGNUP",
+                    payload: usuarioLocalStorage,
+                })
+            }
+            catch(error){
+                console.log(error)
+            }
+        }
+    }
 }
 
 export default authActions

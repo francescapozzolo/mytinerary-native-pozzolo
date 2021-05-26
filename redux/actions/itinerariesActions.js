@@ -53,7 +53,7 @@ const itineraryActions = {
     borrarComentario: (idComentario, idItinerario, token) => {
         return async (dispatch, getState) => {
             try{
-                const respuesta = await axios.delete('https://mytinerary-pozzolo.herokuapp.com/itineraries/comments/'+ idItinerario, {
+                const respuesta = await axios.delete('https://mytinerary-pozzolo.herokuapp.com/api/itineraries/comments/'+ idItinerario, {
                     headers:{
                         'Authorization': 'Bearer ' + token
                     },
@@ -79,7 +79,6 @@ const itineraryActions = {
                         'Authorization': 'Bearer ' + token
                     }
                 })
-                console.log(respuesta)
                 dispatch({
                     type: 'ACTUALIZAR_ITINERARIOS',
                     payload: respuesta.data.respuesta.itinerarios

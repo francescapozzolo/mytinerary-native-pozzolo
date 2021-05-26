@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text, TextInput, StyleSheet, ImageBackground, View, Pressable } from 'react-native'
+import { Text, TextInput, StyleSheet, ImageBackground, View, Pressable, TouchableHighlight, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import authActions from '../redux/actions/authActions'
 
@@ -16,9 +16,17 @@ const LogIn = (props) => {
         })
     }
 
-    const cargarUsuario = () => {
-        props.loguearUsuario(usuario)
-    }
+    const cargarUsuario = async () => {
+        if (Object.values(usuario).some(value => value === "")) {
+            Alert.alert('Some fields are empty, please complete them to continue')
+        } else{
+            const respuesta = await props.loguearUsuario(usuario)
+            if(respuesta){
+                Alert.alert(`Welcome to Mytinerary`)
+                props.navigation.navigate('home')
+            }
+        }
+    }    
 
     return (
         <ImageBackground source={require('../assets/fotoFormulario.jpg')} style={styles.contenedorRegistro}>
@@ -38,10 +46,9 @@ const LogIn = (props) => {
                     textContentType= 'newPassword'
                     onChangeText= {(e)=> guardarDatosUsuario(e, 'password')}> 
                 </TextInput>
-                <Text 
-                        style={styles.tituloLogo}
-                        onPress={() => cargarUsuario()}>Log in
-                </Text>
+                <TouchableHighlight onPress={() => cargarUsuario()}> 
+                    <Text style={styles.tituloLogo}> Log in</Text>
+                </TouchableHighlight>
                 <Pressable onPress={() => props.navigation.navigate('signup')}> 
                     <Text>New in Mytinerary? Sign Up</Text>
                 </Pressable>
